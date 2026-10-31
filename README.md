@@ -1,32 +1,22 @@
-## Fluxo de execução do arquivo 'seed.py'
+## Execução e fluxo de dados
 
-A geração dos dados simulados é iniciada pelo arquivo `seed.py`, executado pelo comando:
+1. monitoramento/models.py: define as entidades Station e Observation, seus campos e relacionamentos.
+2. Migrations: criam e atualizam a estrutura das tabelas no banco SQLite.
+3. scripts/seed.py: gera dados sintéticos de níveis dos rios e intensidade de chuva, exportando para data/observations.csv.
+4. monitoramento/management/commands/import_csv.py: lê o CSV e utiliza o Django ORM para inserir ou atualizar as observações no banco.
+5. API REST: disponibiliza os dados persistidos por meio dos endpoints.
 
-```bash
-python seed.py
-```
-
-O processo segue as seguintes etapas:
-
-1. **Inicialização:** o `seed.py` carrega as configurações do Django por meio de `setup/settings.py`.
-2. **Importação:** carrega os models `Station` e `Observation`, definidos em `monitoramento/models.py`.
-3. **Geração:** executa a função `seed()`, responsável por gerar as estações e suas observações simuladas.
-4. **Persistência:** utiliza o Django ORM para inserir ou atualizar os registros no banco de dados.
-5. **Armazenamento:** o Django gerencia a conexão configurada em `settings.py` e persiste os dados no SQLite.
-
-**Arquivos envolvidos:**
-
-| Arquivo | Responsabilidade |
-|---|---|
-| `seed.py` | Geração e inserção dos dados simulados. |
-| `setup/settings.py` | Configurações do projeto e do banco de dados. |
-| `monitoramento/models.py` | Definição das entidades e seus campos. |
-| `monitoramento/migrations/` | Controle das alterações na estrutura das tabelas. |
-
-**Execução inicial:** antes de gerar os dados, crie as tabelas com:
-
-```bash
+# 1. Gerar as migrações a partir dos modelos
 python manage.py makemigrations
+
+# 2. Aplicar as migrações no SQLite
 python manage.py migrate
-python seed.py
-```
+
+# 3. Gerar os dados sintéticos
+python scripts/seed.py
+
+# 4. Importar os dados para o banco
+python manage.py import_csv
+
+# 5. Iniciar a API REST
+python manage.py runserver
