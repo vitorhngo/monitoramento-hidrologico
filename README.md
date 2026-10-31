@@ -1,6 +1,6 @@
 # Execução e fluxo de dados
 
-1. monitoramento/models.py: define as entidades Station e Observation, seus campos e relacionamentos.
+1. monitoring/models.py: define as entidades Station e Observation, seus campos e relacionamentos.
 2. Migrations: criam e atualizam a estrutura das tabelas no banco SQLite.
 3. scripts/seed.py: gera dados sintéticos de níveis dos rios e intensidade de chuva, exportando para data/observations.csv.
 4. monitoramento/management/commands/import_csv.py: lê o CSV e utiliza o Django ORM para inserir ou atualizar as observações no banco.
