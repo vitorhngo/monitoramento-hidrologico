@@ -7,17 +7,8 @@
 5. API REST: disponibiliza os dados persistidos por meio dos endpoints.
 
 ## Sequência de comandos a executar
-1. Gerar as migrações a partir dos modelos
-python manage.py makemigrations
-
-2. Aplicar as migrações no SQLite
-python manage.py migrate
-
-3. Gerar os dados sintéticos
-python scripts/seed.py
-
-4. Importar os dados para o banco
-python manage.py import_csv
-
-5. Iniciar a API REST
-python manage.py runserver
+1. python manage.py makemigrations  #Gerar as migrações a partir dos modelos:
+2. python manage.py migrate  #Aplicar as migrações no SQLite
+3. python scripts/seed.py  #Gerar os dados sintéticos
+4. python manage.py import_csv  #Importar os dados para o banco
+5. python manage.py runserver  #Iniciar a API REST
