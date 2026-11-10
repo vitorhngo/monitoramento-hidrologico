@@ -4,7 +4,7 @@ from django.db.models import Q
 
 class Station(models.Model):
     # Estação hidrológica
-
+    id = models.CharField(primary_key=True, max_length=20)
     name = models.CharField(max_length=120)
     river = models.CharField(max_length=120)
     municipality = models.CharField(max_length=120)
