@@ -6,19 +6,19 @@ from pathlib import Path
 
 stations = [
     {
-        "id": 1,
+        "id": "EST-01",
         "name": "Estação Aurora",
         "river": "Rio Aurora",
         "municipality": "Vila Aurora",
     },
     {
-        "id": 2,
+        "id": "EST-02",
         "name": "Estação Vale Verde",
         "river": "Rio Verde",
         "municipality": "Vale Verde",
     },
     {
-        "id": 3,
+        "id": "EST-03",
         "name": "Estação Campo Alto",
         "river": "Rio do Campo",
         "municipality": "Campo Alto",

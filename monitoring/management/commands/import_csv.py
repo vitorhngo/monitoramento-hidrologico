@@ -88,7 +88,7 @@ class Command(BaseCommand):
             for row in reader:
                 # O id vem do seed, para que as observações apontem para a estação certa.
                 _, created = Station.objects.update_or_create(
-                    pk=int(row["id"]),
+                    pk=row["id"],
                     defaults={
                         "name": row["name"],
                         "river": row["river"],
@@ -117,7 +117,7 @@ class Command(BaseCommand):
             for line_number, row in enumerate(reader, start=2):
 
                 # A estação deve ter sido criada antes pelo stations.csv.
-                station = stations_by_id.get(int(row["station_id"]))
+                station = stations_by_id.get(row["station_id"])
                 if station is None:
                     raise CommandError(
                         f"Linha {line_number}: estação {row['station_id']} "
