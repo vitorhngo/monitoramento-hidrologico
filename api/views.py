@@ -66,4 +66,31 @@ class StationViewSet(viewsets.ModelViewSet):
             'simulated': True, # dados fictícios (exigência do desafio)
             'source': Observation.Source.SYNTHETIC,
             'points': ObservationPointSerializer(observations, many=True).data,
+        )}
+          
+    @action(detail=True, methods=["get"], url_path="summary")
+    def summary(self, request, pk=None):
+        station = self.get_object()
+        latest_readings = {}
+
+        for metric in (Observation.Metric.LEVEL, Observation.Metric.RAIN):
+            observation = (
+                Observation.objects.filter(station=station, metric=metric)
+                .order_by("-observed_at", "-id")
+                .first()
+            )
+            latest_readings[metric] = (
+                {
+                    "value": observation.value,
+                    "unit": observation.unit,
+                    "observed_at": observation.observed_at,
+                }
+                if observation is not None
+                else None
+            )
+
+        return Response({
+            "is_simulated": True,
+            "station": self.get_serializer(station).data,
+            "latest_readings": latest_readings,
         })
