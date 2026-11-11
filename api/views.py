@@ -66,7 +66,7 @@ class StationViewSet(viewsets.ModelViewSet):
             'simulated': True, # dados fictícios (exigência do desafio)
             'source': Observation.Source.SYNTHETIC,
             'points': ObservationPointSerializer(observations, many=True).data,
-        )}
+        })
           
     @action(detail=True, methods=["get"], url_path="summary")
     def summary(self, request, pk=None):
