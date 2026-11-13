@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'api',
     'drf_spectacular',
     'drf_spectacular_sidecar',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -142,6 +143,13 @@ MAILERS = {
 
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',  # GET liberado, os demais exigem login
+    ],
 }
 
 SPECTACULAR_SETTINGS = {
