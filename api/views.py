@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from django.utils import timezone
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiResponse
 from rest_framework import viewsets, status # viewsets para criar CRUD da API automaticamente
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -25,10 +26,49 @@ class StationViewSet(viewsets.ModelViewSet):
     serializer_class = StationSerializer # serializer usado para (de)serializar Station
     http_method_names = ['get', 'head']
 
-    # GET /api/stations/{id}/series/?metric=level&hours=24
+    # GET /api/stations/{id}/series?metric=level&hours=24
     # Histórico de nível ('level') ou chuva ('rain') de uma estação.
+    @extend_schema(
+        summary="Histórico de nível ou chuva de uma estação",
+        description=(
+            "Devolve as leituras da estação, em ordem de horário (UTC), "
+            "para a métrica e a janela de horas escolhidas. Dados simulados."
+        ),
+        parameters=[
+            OpenApiParameter(
+                name='metric',
+                type=str,
+                location=OpenApiParameter.QUERY,
+                required=True,
+                enum=['level', 'rain'],
+                description="Métrica: 'level' (nível, em m) ou 'rain' (chuva, em mm/h).",
+            ),
+            OpenApiParameter(
+                name='hours',
+                type={'type': 'integer', 'minimum': 1, 'maximum': 72, 'default': 24},
+                location=OpenApiParameter.QUERY,
+                required=False,
+                description="Janela de tempo em horas, de 1 a 72. Padrão: 24.",
+            ),
+        ],
+        responses={
+            200: OpenApiResponse(description="Série histórica da estação."),
+            400: OpenApiResponse(description="Parâmetro 'metric' ou 'hours' inválido."),
+            404: OpenApiResponse(description="Estação não encontrada."),
+        },
+    )
     @action(detail=True, methods=['get'], url_path='series')
     def series(self, request, pk=None):
+        """
+        Histórico de nível ou chuva de uma estação (dados simulados).
+
+        Parâmetros na URL:
+        - metric: 'level' (nível, em m) ou 'rain' (chuva, em mm/h). Obrigatório.
+        - hours: janela em horas, de 1 a 72. Padrão: 24.
+
+        Exemplo: /api/stations/EST-01/series?metric=level&hours=24
+        Para um formulário interativo, use /api/docs/.
+        """
         station = self.get_object() # 404 automático se a estação não existe
 
         # Valida a métrica (obrigatória)
@@ -67,7 +107,7 @@ class StationViewSet(viewsets.ModelViewSet):
             'source': Observation.Source.SYNTHETIC,
             'points': ObservationPointSerializer(observations, many=True).data,
         })
-          
+
     @action(detail=True, methods=["get"], url_path="summary")
     def summary(self, request, pk=None):
         station = self.get_object()
