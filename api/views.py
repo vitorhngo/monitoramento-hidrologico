@@ -24,7 +24,6 @@ MAX_HOURS = 72
 class StationViewSet(viewsets.ModelViewSet):
     queryset = Station.objects.all().order_by('id') # queryset base, ordenado por id
     serializer_class = StationSerializer # serializer usado para (de)serializar Station
-    http_method_names = ['get', 'head']
 
     # GET /api/stations/{id}/series?metric=level&hours=24
     # Histórico de nível ('level') ou chuva ('rain') de uma estação.
