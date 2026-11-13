@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django_filters',
     'monitoring',
     'api',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -136,4 +137,18 @@ MAILERS = {
     'default': {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'API de Monitoramento Hidrológico',
+    'DESCRIPTION': (
+        'API de demonstração com estações e observações **simuladas**. '
+        'Os dados não descrevem rios reais.'
+    ),
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
 }
